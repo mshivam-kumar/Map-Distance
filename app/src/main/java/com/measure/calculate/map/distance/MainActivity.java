@@ -142,10 +142,7 @@ public class MainActivity extends AppCompatActivity {
 //        TextView inYards=findViewById(R.id.inYards);
 
 
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(2000);
+       
 
         loadSavedStartPoint=findViewById(R.id.loadSavedStartPoint);
 
@@ -169,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
                 showMsg.setText("Please Wait !!");
                 mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
-                getCurrentLocation();
                 startButton.setEnabled(false);
                 loadSavedStartPoint.setEnabled(false);
 
@@ -312,7 +308,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (isGPSEnabled()) {
 
-                    LocationServices.getFusedLocationProviderClient(MainActivity.this)
                             .requestLocationUpdates(locationRequest, new LocationCallback() {
                                 @SuppressLint("SetTextI18n")
                                 @Override
@@ -471,7 +466,6 @@ public class MainActivity extends AppCompatActivity {
                 .addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
 
-        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
                 .checkLocationSettings(builder.build());
 
         result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
@@ -488,7 +482,6 @@ public class MainActivity extends AppCompatActivity {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
                             try {
-                                ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                                 resolvableApiException.startResolutionForResult(MainActivity.this, 2);
                             } catch (IntentSender.SendIntentException ex) {
                                 ex.printStackTrace();
@@ -553,9 +546,7 @@ public class MainActivity extends AppCompatActivity {
 
         double p = 0.017453292519943295;    // Math.PI / 180
 //        double c = Math.cos;
-        double a = 0.5 - Math.cos((lat2 - lat1) * p)/2+
-                Math.cos(lat1*p)*Math.cos(lat2*p)*
-                        (1-Math.cos((lon2-lon1)*p))/2;
+        double a;
 
 
 
